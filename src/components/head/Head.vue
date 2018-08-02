@@ -37,6 +37,21 @@
     <div class="sticky-footer" v-if="isPop">
       <div class="content">
         <h1>{{seller.name}}</h1>
+        <div class="text">
+          <span>优惠信息</span>
+        </div>
+        <ul>
+          <li v-for="(item, index) in seller.supports" :key="index" class="reducedInfo">
+            <span :class="'type-'+item.type" class="icon"></span>
+            <span class="info">
+              {{item.description}}
+            </span>
+          </li>
+        </ul>
+        <div class="text">
+          <span>商家公告</span>
+        </div>
+        <p class="introduce">{{seller.bulletin}}</p>
       </div>
       <div class="close" @click="closePop">
         <i class="icon-close"></i>
@@ -152,7 +167,7 @@ export default {
       .count {
         position: absolute;
         right: 12px;
-        bottom: 40px;
+        bottom: 44px;
         padding: 0 18px 0 8px;
         height: 24px;
         line-height: 24px;
@@ -232,6 +247,57 @@ export default {
         font-size: 16px;
         font-weight: 700;
         text-align: center;
+      }
+      .text {
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        margin: 28px auto 24px;
+        span {
+          padding: 0 12px;
+        }
+        &:before,
+        &:after {
+          content: "";
+          flex: 1;
+          display: block;
+          height: 1px;
+          background-color: #fff;
+          position: relative;
+          top: 7px;
+        }
+      }
+      .reducedInfo {
+        padding: 0 12px;
+        margin-bottom: 12px;
+        .icon {
+          display: inline-block;
+          vertical-align: text-bottom;
+          margin-right: 4px;
+          width: 16px;
+          height: 16px;
+          background-size: 16px 16px;
+          background-repeat: no-repeat;
+          &.type-0 {
+            .bg-img("decrease_2");
+          }
+          &.type-1 {
+            .bg-img("discount_2");
+          }
+          &.type-2 {
+            .bg-img("guarantee_2");
+          }
+          &.type-3 {
+            .bg-img("invoice_2");
+          }
+          &.type-4 {
+            .bg-img("special_2");
+          }
+        }
+      }
+      .introduce {
+        padding: 0 12px;
+        line-height: 24px;
       }
     }
     .close {
