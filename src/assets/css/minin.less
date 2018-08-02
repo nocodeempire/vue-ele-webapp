@@ -1,0 +1,36 @@
+.border-1px(@color:currentColor) {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border: 1px solid @color
+  }
+}
+// 通过设备像素缩放线宽 你想 iphone6实际750 但是展现在手机上的只有375 缩了一半 也就是两个像素显示1px
+@media (-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5){
+  .border-1px{
+      &::after{
+          -webkit-transform: scaleY(0.7);
+          transform: scaleY(0.7);
+      }
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2){
+  .border-1px{
+      &::after{
+          -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+      }
+  }
+}
+
+.bg-img(@imgname) {
+  background-image: url('../images/@{imgname}@2x.png');
+  @media (-webkit-min-device-pixel-ratio:3),(min-device-pixel-ratio:3) {
+    background-image: url('../images/@{imgname}@3x.png');
+  }
+}
