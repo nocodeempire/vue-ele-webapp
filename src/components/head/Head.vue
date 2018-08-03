@@ -34,33 +34,42 @@
         <img :src="seller.avatar" alt="">
       </div>
     </div>
-    <div class="sticky-footer" v-if="isPop">
-      <div class="content">
-        <h1>{{seller.name}}</h1>
-        <div class="text">
-          <span>优惠信息</span>
+    <transition name="fade">
+      <div class="sticky-footer" v-if="isPop">
+        <div class="content">
+          <h1>{{seller.name}}</h1>
+          <div class="starcomp">
+            <star :size=48 :score="seller.score"></star>
+          </div>
+          <div class="text">
+            <span>优惠信息</span>
+          </div>
+          <ul>
+            <li v-for="(item, index) in seller.supports" :key="index" class="reducedInfo">
+              <span :class="'type-'+item.type" class="icon"></span>
+              <span class="info">
+                {{item.description}}
+              </span>
+            </li>
+          </ul>
+          <div class="text">
+            <span>商家公告</span>
+          </div>
+          <p class="introduce">{{seller.bulletin}}</p>
         </div>
-        <ul>
-          <li v-for="(item, index) in seller.supports" :key="index" class="reducedInfo">
-            <span :class="'type-'+item.type" class="icon"></span>
-            <span class="info">
-              {{item.description}}
-            </span>
-          </li>
-        </ul>
-        <div class="text">
-          <span>商家公告</span>
+        <div class="close" @click="closePop">
+          <i class="icon-close"></i>
         </div>
-        <p class="introduce">{{seller.bulletin}}</p>
       </div>
-      <div class="close" @click="closePop">
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>
+import star from "@/components/star/Star";
 export default {
+  components: {
+    star
+  },
   data() {
     return {
       seller: {},
@@ -70,7 +79,7 @@ export default {
   created() {
     this.axios.get("/api/seller").then(data => {
       this.seller = data.data;
-      console.log(this.seller);
+      // console.log(this.seller);
     });
   },
   methods: {
@@ -227,6 +236,13 @@ export default {
       }
     }
   }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
   .sticky-footer {
     position: absolute;
     top: 0;
@@ -243,6 +259,10 @@ export default {
       flex: 1;
       margin: 64px auto;
       width: 80%;
+      .starcomp {
+        margin-top: 18px;
+        text-align: center;
+      }
       h1 {
         font-size: 16px;
         font-weight: 700;
@@ -262,7 +282,7 @@ export default {
           flex: 1;
           display: block;
           height: 1px;
-          background-color: #fff;
+          background-color: rgba(255, 255, 255, 0.2);
           position: relative;
           top: 7px;
         }

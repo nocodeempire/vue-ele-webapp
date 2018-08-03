@@ -7,11 +7,13 @@
       <router-link to="/seller" class='tap'>商家</router-link>
     </div>
     <router-view></router-view>
+    <foot></foot>
   </div>
 </template>
 
 <script>
 import Head from '@/components/head/Head'
+import foot from '@/components/foot/Foot'
 export default {
   name: 'eleme',
   data() {
@@ -20,7 +22,8 @@ export default {
     }
   },
   components: {
-    'v-head': Head
+    'v-head': Head,
+    foot
   }
 }
 </script>
@@ -31,6 +34,7 @@ export default {
     display: flex;
     height: 40px;
     line-height: 40px;
+    font-size: 14px;
     .border-1px(#ccc);
     .tap {
       flex: 1;
