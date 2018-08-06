@@ -2,20 +2,61 @@
   <div class="foot">
     <div class="desc">
       <div class="car">
-        <div class="circle">
-          <i class="icon-shopping_cart"></i>
+        <div class="circle" :class="[countNum>0 ? 'active' : '']">
+          <i class="icon-shopping_cart" :class="[countNum>0 ? 'active' : '']"></i>
         </div>
       </div>
       <div class="rates">
-        <span class="total">￥0</span>
-        <span class="delivery">另需配送费￥11</span>
+        <span class="total" :class="[countNum>0 ? 'active' : '']">￥{{totalPrice}}</span>
+        <span class="delivery">另需配送费￥{{deliveryPrice}}</span>
       </div>
     </div>
-    <div class="price">￥20起送</div>
+    <div class="price" :class="[this.totalPrice >= this.minPrice>0 ? 'active' : '']">{{goPrice}}</div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  props: {
+    minPrice: {
+      type: Number,
+      default: 0
+    },
+    deliveryPrice: {
+      type: Number,
+      default: 0
+    },
+    selectedPrice: {
+      type: Array // 默认传过来的是一个数组,数组成员是一个个对象,对象属性是价格和数量
+    }
+  },
+  computed: {
+    countNum() {
+      let count = 0;
+      this.selectedPrice.forEach((item, index) => {
+        count += item.count;
+      });
+      return count;
+    },
+    totalPrice() {
+      let totalPrice = 0;
+      if (!this.selectedPrice.length) return 0;
+      this.selectedPrice.forEach((item, index) => {
+        item.count = item.count ? item.count : 0;
+        totalPrice += item.price * item.count;
+      });
+      return totalPrice;
+    },
+    goPrice() {
+      if (this.totalPrice === 0) {
+        return `￥${this.minPrice}起送`;
+      } else if (this.totalPrice < this.minPrice) {
+        return `还差￥${this.minPrice - this.totalPrice}起送`;
+      }else {
+        return '去结算'
+      }
+    }
+  }
+};
 </script>
 <style lang="less">
 .foot {
@@ -49,6 +90,12 @@ export default {};
       .icon-shopping_cart {
         font-size: 24px;
         line-height: 44px;
+        &.active {
+          color: #fff;
+        }
+      }
+      &.active {
+        background-color: #00a0dc;
       }
     }
     .rates {
@@ -61,8 +108,11 @@ export default {};
         line-height: 24px;
         padding-right: 12px;
         font-weight: 700;
-        border-right: 1px solid rgba(255,255,255,0.1);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
         margin-right: 12px;
+        &.active {
+          color: #fff;
+        }
       }
       .delivery {
         font-size: 10px;
@@ -77,6 +127,10 @@ export default {};
     text-align: center;
     line-height: 48px;
     font-weight: 700;
+    &.active {
+      background-color:#00b43c;
+      color: #fff
+    }
   }
 }
 </style>

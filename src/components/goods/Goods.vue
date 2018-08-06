@@ -1,4 +1,5 @@
 <template>
+<div class="container">
   <div class="goods">
    <div class="goodLeft" ref="wrapperLeft">
      <ul class="goodlist">
@@ -28,29 +29,46 @@
                  <span v-if="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                </div>
              </div>
+             <div class="addgoodcomp">
+               <addgood :food.sync="food"></addgood>
+             </div>
            </li>
          </ul>
        </li>
      </ul>
    </div>
   </div>
+  <foot :selectedPrice="selectedPrice" :minPrice="minPrice" :deliveryPrice="deliveryPrice"></foot>
+</div>
 </template>
 <script>
 import BScroll from "better-scroll";
+import addgood from "@/components/addgood/Addgood";
+import foot from "@/components/foot/Foot";
 export default {
   data() {
     return {
-      goods: {},
+      goods: [],
       scrollHeigthList: [0],
       scrollY: 0,
-      scrollRight: ''
+      scrollRight: "",
+      minPrice: 0,
+      deliveryPrice: 0,
+      foods: []
     };
+  },
+  components: {
+    addgood,
+    foot
   },
   methods: {
     _initScroll() {
       // better-scroll插件 api文档 https://github.com/ustbhuangyi/better-scroll/blob/master/doc/zh-hans/options.md
-      let scrollLeft = new BScroll(this.$refs.wrapperLeft, {click: true});
-      this.scrollRight = new BScroll(this.$refs.wrapperRight, { probeType: 3 });
+      let scrollLeft = new BScroll(this.$refs.wrapperLeft, { click: true });
+      this.scrollRight = new BScroll(this.$refs.wrapperRight, {
+        probeType: 3,
+        click: true
+      });
       this.scrollRight.on("scroll", data => {
         this.scrollY = Math.abs(data.y);
         // console.log(this.scrollY);
@@ -66,7 +84,14 @@ export default {
       }
     },
     rightScrollPosition(index) {
-      this.scrollRight.scrollToElement(this.$refs.wrapperRight.querySelectorAll(".singleitem")[index],300)
+      this.scrollRight.scrollToElement(
+        this.$refs.wrapperRight.querySelectorAll(".singleitem")[index],
+        300
+      );
+    },
+    changefood(msg) {
+      food.count = msg;
+      // console.log(food);
     }
   },
   created() {
@@ -78,6 +103,10 @@ export default {
         this._initScroll();
       });
     });
+    this.axios.get("/api/seller").then(data => {
+      this.minPrice = data.data.minPrice;
+      this.deliveryPrice = data.data.deliveryPrice;
+    });
   },
   computed: {
     leftIndex() {
@@ -88,6 +117,15 @@ export default {
           return j;
         }
       }
+    },
+    selectedPrice() {
+      this.goods && this.goods.forEach(good => {
+        good.foods.forEach(food => {
+          this.foods.push(food)
+        })
+      });
+      // console.log(this.foods)
+      return this.foods;
     }
   },
   mounted() {}
@@ -173,6 +211,7 @@ export default {
           padding-bottom: 18px;
           box-sizing: border-box;
           .border-1px(rgba(7,17,27,0.1));
+          position: relative;
           img {
             flex: 0 0 57px;
             width: 57px;
@@ -199,6 +238,11 @@ export default {
               color: #f01414;
               margin-right: 8px;
             }
+          }
+          .addgoodcomp {
+            position: absolute;
+            right: 0;
+            bottom: 6px;
           }
         }
         .fooddetail:last-child:after {
