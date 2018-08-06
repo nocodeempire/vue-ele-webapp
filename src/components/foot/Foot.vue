@@ -2,6 +2,7 @@
   <div class="foot">
     <div class="desc">
       <div class="car">
+<<<<<<< HEAD
         <div class="circle" :class="[countNum>0 ? 'active' : '']">
           <i class="icon-shopping_cart" :class="[countNum>0 ? 'active' : '']"></i>
         </div>
@@ -57,6 +58,22 @@ export default {
     }
   }
 };
+=======
+        <div class="circle">
+          <i class="icon-shopping_cart"></i>
+        </div>
+      </div>
+      <div class="rates">
+        <span class="total">￥0</span>
+        <span class="delivery">另需配送费￥11</span>
+      </div>
+    </div>
+    <div class="price">￥20起送</div>
+  </div>
+</template>
+<script>
+export default {};
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
 </script>
 <style lang="less">
 .foot {
@@ -90,12 +107,15 @@ export default {
       .icon-shopping_cart {
         font-size: 24px;
         line-height: 44px;
+<<<<<<< HEAD
         &.active {
           color: #fff;
         }
       }
       &.active {
         background-color: #00a0dc;
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
       }
     }
     .rates {
@@ -108,11 +128,16 @@ export default {
         line-height: 24px;
         padding-right: 12px;
         font-weight: 700;
+<<<<<<< HEAD
         border-right: 1px solid rgba(255, 255, 255, 0.1);
         margin-right: 12px;
         &.active {
           color: #fff;
         }
+=======
+        border-right: 1px solid rgba(255,255,255,0.1);
+        margin-right: 12px;
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
       }
       .delivery {
         font-size: 10px;
@@ -127,10 +152,13 @@ export default {
     text-align: center;
     line-height: 48px;
     font-weight: 700;
+<<<<<<< HEAD
     &.active {
       background-color:#00b43c;
       color: #fff
     }
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
   }
 }
 </style>

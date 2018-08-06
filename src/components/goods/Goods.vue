@@ -29,9 +29,12 @@
                  <span v-if="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                </div>
              </div>
+<<<<<<< HEAD
              <div class="addgoodcomp">
                <addgood :food.sync="food"></addgood>
              </div>
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
            </li>
          </ul>
        </li>
@@ -43,6 +46,7 @@
 </template>
 <script>
 import BScroll from "better-scroll";
+<<<<<<< HEAD
 import addgood from "@/components/addgood/Addgood";
 import foot from "@/components/foot/Foot";
 export default {
@@ -69,6 +73,22 @@ export default {
         probeType: 3,
         click: true
       });
+=======
+export default {
+  data() {
+    return {
+      goods: {},
+      scrollHeigthList: [0],
+      scrollY: 0,
+      scrollRight: ''
+    };
+  },
+  methods: {
+    _initScroll() {
+      // better-scroll插件 api文档 https://github.com/ustbhuangyi/better-scroll/blob/master/doc/zh-hans/options.md
+      let scrollLeft = new BScroll(this.$refs.wrapperLeft, {click: true});
+      this.scrollRight = new BScroll(this.$refs.wrapperRight, { probeType: 3 });
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
       this.scrollRight.on("scroll", data => {
         this.scrollY = Math.abs(data.y);
         // console.log(this.scrollY);
@@ -84,6 +104,7 @@ export default {
       }
     },
     rightScrollPosition(index) {
+<<<<<<< HEAD
       this.scrollRight.scrollToElement(
         this.$refs.wrapperRight.querySelectorAll(".singleitem")[index],
         300
@@ -92,6 +113,9 @@ export default {
     changefood(msg) {
       food.count = msg;
       // console.log(food);
+=======
+      this.scrollRight.scrollToElement(this.$refs.wrapperRight.querySelectorAll(".singleitem")[index],300)
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
     }
   },
   created() {
@@ -103,10 +127,13 @@ export default {
         this._initScroll();
       });
     });
+<<<<<<< HEAD
     this.axios.get("/api/seller").then(data => {
       this.minPrice = data.data.minPrice;
       this.deliveryPrice = data.data.deliveryPrice;
     });
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
   },
   computed: {
     leftIndex() {
@@ -117,6 +144,7 @@ export default {
           return j;
         }
       }
+<<<<<<< HEAD
     },
     selectedPrice() {
       this.goods && this.goods.forEach(good => {
@@ -126,6 +154,8 @@ export default {
       });
       // console.log(this.foods)
       return this.foods;
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
     }
   },
   mounted() {}
@@ -211,7 +241,10 @@ export default {
           padding-bottom: 18px;
           box-sizing: border-box;
           .border-1px(rgba(7,17,27,0.1));
+<<<<<<< HEAD
           position: relative;
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
           img {
             flex: 0 0 57px;
             width: 57px;
@@ -239,11 +272,14 @@ export default {
               margin-right: 8px;
             }
           }
+<<<<<<< HEAD
           .addgoodcomp {
             position: absolute;
             right: 0;
             bottom: 6px;
           }
+=======
+>>>>>>> d5e7630f1ae987b3b672b392066233a71fa5b658
         }
         .fooddetail:last-child:after {
           border-bottom: none;
