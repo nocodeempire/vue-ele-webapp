@@ -12,6 +12,11 @@
       </div>
     </div>
     <div class="price" :class="[this.totalPrice >= this.minPrice>0 ? 'active' : '']">{{goPrice}}</div>
+    <transition-group name="ball" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter">
+      <div class="ballList" v-for="(item, index) in ballList" :key="index" v-show="item.show">
+        <span class="ball"></span>
+      </div>
+    </transition-group>
   </div>
 </template>
 <script>
@@ -26,14 +31,25 @@ export default {
       default: 0
     },
     selectedPrice: {
-      type: Array // 默认传过来的是一个数组,数组成员是一个个对象,对象属性是价格和数量
+      type: Array
     }
+  },
+  data() {
+    return {
+      ballList: [
+        { show: false }
+        // { show: false },
+        // { show: false },
+        // { show: false },
+        // { show: false }
+      ]
+    };
   },
   computed: {
     countNum() {
       let count = 0;
       this.selectedPrice.forEach((item, index) => {
-        count += item.count;
+        count += item.count || 0;
       });
       return count;
     },
@@ -41,7 +57,7 @@ export default {
       let totalPrice = 0;
       if (!this.selectedPrice.length) return 0;
       this.selectedPrice.forEach((item, index) => {
-        item.count = item.count ? item.count : 0;
+        item.count = item.count || 0;
         totalPrice += item.price * item.count;
       });
       return totalPrice;
@@ -51,16 +67,47 @@ export default {
         return `￥${this.minPrice}起送`;
       } else if (this.totalPrice < this.minPrice) {
         return `还差￥${this.minPrice - this.totalPrice}起送`;
-      }else {
-        return '去结算'
+      } else {
+        return "去结算";
       }
+    }
+  },
+  methods: {
+    beforeEnter(el) {
+      // console.log("beforeEnter");
+      console.log(this.ballList[0]);
+      el.offsetHeight;
+      let count = this.ballList.length;
+      // while(count--) {
+      el.style.display = "";
+      el.style.transform = "translate(-" +(this.ballList[0].position.x + 12) + "px, 0)";
+      // }
+    },
+    enter(el, done) {
+      el.offsetHeight;
+      this.$nextTick(() => {
+        el.style.transform = "translate(0, 0)";
+      });
+      done();
+    },
+    afterEnter(el) {},
+    drop(pos) {
+      // 获取添加的位置信息
+      let position = pos.getBoundingClientRect();
+      console.log(position);
+      this.ballList.forEach(ball => {
+        if (!ball.show) {
+          ball.show = true;
+          ball.position = position;
+        }
+      });
     }
   }
 };
 </script>
 <style lang="less">
 .foot {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   height: 48px;
@@ -128,8 +175,23 @@ export default {
     line-height: 48px;
     font-weight: 700;
     &.active {
-      background-color:#00b43c;
-      color: #fff
+      background-color: #00b43c;
+      color: #fff;
+    }
+  }
+  .ballList {
+    position: fixed;
+    bottom: 30px;
+    left: 33px;
+    z-index: 10;
+    transition: all 0.6s cubic-bezier(0.49, -0.29, 0.75, 0.41);
+    .ball {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background-color: red;
+      border-radius: 50%;
+      transition: all 0.6s;
     }
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div class="addgood">
-    <div class="decrease" v-show="food.count > 0" @click="decrease">
+    <div class="decrease" v-show='food.count > 0' @click="decrease">
       <i class="icon-remove_circle_outline"></i>
     </div>
-    <div class="num" v-show="food.count > 0">{{food.count}}</div>
-    <div class="add icon-add_circle" @click="add"></div>
+    <div class="num" v-show='food.count > 0'>{{food.count}}</div>
+    <div class="add icon-add_circle" @click="add" ref="addfoodposition"></div>
   </div>
 </template>
 <script>
@@ -22,16 +22,12 @@ export default {
       this.food.count--;
     },
     add() {
-      // if (!this.food.count) {
-      //   // 刚进来这个字段没有 对象中新增的字段需要set一下
-      //   this.$set(this.food, "count", 0);
-      // }
      this.food.count++ ;
-     console.log(this.food.count)
+     this.$emit("addposition", this.$refs.addfoodposition)  // 把添加的这个元素传出去 好知道小球的具体位置
     }
   },
-  created() {
-    // console.log(this.food)
+  mounted() {
+    // console.log(this.$refs.addfoodposition)
   }
 };
 </script>

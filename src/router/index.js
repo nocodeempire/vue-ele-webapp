@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Goods from '@/components/goods/Goods'
 import Seller from '@/components/seller/Seller'
 import Ratings from '@/components/ratings/Ratings'
+import test from '@/components/test/test'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ const router =  new Router({
       name: 'ratings',
       component: Ratings,
       // meta:{ requireAuth: true }  // 需要验证才能看到的页面
+    },
+    {
+      path: '/test',
+      name: 'seller',
+      component: test
     }
   ]
 })

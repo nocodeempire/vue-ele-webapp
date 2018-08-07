@@ -30,7 +30,7 @@
                </div>
              </div>
              <div class="addgoodcomp">
-               <addgood :food.sync="food"></addgood>
+               <addgood :food.sync="food" @addposition="addposition"></addgood>
              </div>
            </li>
          </ul>
@@ -38,7 +38,7 @@
      </ul>
    </div>
   </div>
-  <foot :selectedPrice="selectedPrice" :minPrice="minPrice" :deliveryPrice="deliveryPrice"></foot>
+  <foot ref="shopcar" :selectedPrice="selectedPrice" :minPrice="minPrice" :deliveryPrice="deliveryPrice"></foot>
 </div>
 </template>
 <script>
@@ -92,10 +92,18 @@ export default {
     changefood(msg) {
       food.count = msg;
       // console.log(food);
+    },
+    addposition(position) {
+      this.$refs.shopcar.drop(position);
     }
   },
   created() {
     this.axios.get("/api/goods").then(res => {
+      res.data.forEach((item) => {
+        item.foods.forEach((food)=> {
+          food.count = 0 ;
+        })
+      });
       this.goods = res.data;
       // 这个直接写在mounted下有问题,打断点发现页面还没出来就走代码了,因为axios请求来的数据,渲染不能保证花了多久,所以把nextTick写在回调函数中.这样就肯定是得到了数据后在渲染之后的事件后添加下面代码事件
       this.$nextTick(function() {
@@ -119,16 +127,18 @@ export default {
       }
     },
     selectedPrice() {
-      this.goods && this.goods.forEach(good => {
-        good.foods.forEach(food => {
-          this.foods.push(food)
-        })
-      });
+      this.goods &&
+        this.goods.forEach(good => {
+          good.foods.forEach(food => {
+            this.foods.push(food);
+          });
+        });
       // console.log(this.foods)
       return this.foods;
     }
   },
-  mounted() {}
+  mounted() {
+  }
 };
 </script>
 <style lang="less">
